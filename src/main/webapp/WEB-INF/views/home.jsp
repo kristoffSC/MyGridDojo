@@ -26,7 +26,7 @@
 	
 	require({
 	    packages: [
-	        { name: "myGrid", location: "//localhost:8080/C3p0JmxDeadlock/resources" },
+	        { name: "myGrid", location: "//localhost:8080/MyGridDojo/resources" },
 	    ]
 	}, [ "myGrid/MyGrid" ]);
 	

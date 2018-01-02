@@ -4,17 +4,9 @@ define(['dojo/_base/declare', 'dojo/_base/lang', 'dojox/grid/DataGrid', 'dojo/da
 	function(declare, lang, DataGrid, ItemFileWriteStore, dom, timing, Memory, DataStore, ObjectStore, lang){
   return declare(null, {
 
-/*    set up data store
-    var data = {
-      identifier: "id",
-      items: []
-    };*/
-    
     objectStore: undefined,
     store: undefined,
   
-  	//t:  new dojox.timing.Timer(5000),
-    
     /*set up layout*/
     layout: [[
       {'name': 'Column 1', 'field': 'id', 'width': '100px'},
@@ -32,28 +24,34 @@ define(['dojo/_base/declare', 'dojo/_base/lang', 'dojox/grid/DataGrid', 'dojo/da
   	    this.store = new dojo.data.ObjectStore({objectStore: this.objectStore}),
   		
   		grid = new DataGrid({
-  	        //id: 'grid',
   	        store: this.store,
   	        rowSelector:'20px',
   	        structure: this.layout,
   	        rowSelector: '25px'});
-
-  	  grid.on(".dgrid-content:contextmenu", function(evt) { 
-		  var row = grid.row(evt); 
-		  activeItem = row && row.data; 
-		  console.log(row);
-		  console.log("ddd");
-		}); 
   		
   		this.grid = grid;
-  		
         this.grid.placeAt("gridDiv");
 
         /*Call startup() to render the grid*/
         this.grid.startup();
   	},    
-        //console.log(store);
     
+  	addOneDelOne: function(counter)
+  	{
+  		var item = {id: counter};
+  		
+  		this.store.newItem(item);
+  		
+  		if (counter > 4)
+  		{
+  			this.store.deleteItem({id: (counter - 2)});
+  		}
+  		
+  		this.store.save();
+  		this.grid.sort();
+  			
+  	},
+  	
   	refresh: function(data)
   	{
     	var oldIds = dojo.clone(this.objectStore.index);
@@ -79,6 +77,7 @@ define(['dojo/_base/declare', 'dojo/_base/lang', 'dojox/grid/DataGrid', 'dojo/da
     	}
     	
     	this.store.save();
+    	this.grid.sort();
   	},
   });
 
